@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Prescription - E-Hospitality{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="glass-card">
+                <h3 class="fw-bold mb-4">E-Prescription</h3>
+                <div class="alert alert-info">
+                    <strong>Patient:</strong> {{ appointment.patient.user.get_full_name }}<br>
+                    <strong>Reason:</strong> {{ appointment.reason }}
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Medication Name</label>
+                        <input type="text" name="medication" class="form-control" placeholder="e.g. Amoxicillin"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Dosage</label>
+                        <input type="text" name="dosage" class="form-control" placeholder="e.g. 500mg, twice a day"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Instructions</label>
+                        <textarea name="instructions" class="form-control" rows="4"
+                            placeholder="Special instructions for the patient..."></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-premium flex-grow-1">Issue Prescription</button>
+                        <a href="{% url 'doctor_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

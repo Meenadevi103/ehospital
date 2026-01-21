@@ -1,0 +1,35 @@
+STDOUT:
+
+STDERR:
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory 'C:\Hsptl\ehospitality\static' in the STATICFILES_DIRS setting does not exist.
+Traceback (most recent call last):
+  File "C:\Hsptl\ehospitality\manage.py", line 22, in <module>
+    main()
+    ~~~~^^
+  File "C:\Hsptl\ehospitality\manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\__init__.py", line 443, in execute_from_command_line
+    utility.execute()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\__init__.py", line 437, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\base.py", line 420, in run_from_argv
+    self.execute(*args, **cmd_options)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\base.py", line 464, in execute
+    output = self.handle(*args, **options)
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\base.py", line 111, in wrapper
+    res = handle_func(*args, **kwargs)
+  File "C:\Hsptl\venv\Lib\site-packages\django\core\management\commands\migrate.py", line 118, in handle
+    executor.loader.check_consistent_history(connection)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Hsptl\venv\Lib\site-packages\django\db\migrations\loader.py", line 361, in check_consistent_history
+    raise InconsistentMigrationHistory(
+    ...<8 lines>...
+    )
+django.db.migrations.exceptions.InconsistentMigrationHistory: Migration admin.0001_initial is applied before its dependency accounts.0001_initial on database 'default'.

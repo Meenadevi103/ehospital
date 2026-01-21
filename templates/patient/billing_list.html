@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing & Invoices - E-Hospitality{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5 animate-up">
+        <div>
+            <h2 class="fw-bold">Billing & Invoices</h2>
+            <p class="text-muted">Manage your payments and view billing history.</p>
+        </div>
+        <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-primary rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Dashboard
+        </a>
+    </div>
+
+    <div class="glass-card animate-up">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th class="border-0">Date</th>
+                        <th class="border-0">Description</th>
+                        <th class="border-0">Amount</th>
+                        <th class="border-0">Status</th>
+                        <th class="border-0 text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in billings %}
+                    <tr>
+                        <td>{{ bill.billing_date|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="fw-semibold">Consultation Fee</div>
+                            <small class="text-muted">ID: #{{ bill.id|stringformat:"05d" }}</small>
+                        </td>
+                        <td class="fw-bold">${{ bill.amount }}</td>
+                        <td>
+                            <span
+                                class="badge rounded-pill {% if bill.status == 'Paid' %}bg-success{% else %}bg-warning text-dark{% endif %} px-3">
+                                {{ bill.status }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            {% if bill.status == 'Unpaid' %}
+                            <button class="btn btn-primary btn-sm rounded-pill px-4">Pay Now</button>
+                            {% else %}
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill px-4">Download PDF</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <p class="text-muted mb-0">No billing records found.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

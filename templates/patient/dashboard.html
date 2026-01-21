@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - E-Hospitality{% endblock %}
+
+{% block extra_css %}
+<style>
+    .sidebar {
+        background: white;
+        border-right: 1px solid #eee;
+        height: calc(100vh - 70px);
+        position: sticky;
+        top: 70px;
+    }
+
+    .nav-link-custom {
+        padding: 12px 20px;
+        color: #555;
+        border-radius: 10px;
+        margin: 5px 0;
+        transition: all 0.3s;
+    }
+
+    .nav-link-custom:hover,
+    .nav-link-custom.active {
+        background: rgba(13, 110, 253, 0.1);
+        color: var(--primary-color);
+    }
+
+    .stat-card {
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 d-none d-md-block sidebar py-4">
+            <nav class="nav flex-column">
+                <a class="nav-link nav-link-custom active" href="{% url 'patient_dashboard' %}"><i
+                        class="fas fa-th-large me-2"></i> Overview</a>
+                <a class="nav-link nav-link-custom" href="{% url 'book_appointment' %}"><i
+                        class="fas fa-calendar-plus me-2"></i> Book Appointment</a>
+                <a class="nav-link nav-link-custom" href="{% url 'medical_records' %}"><i
+                        class="fas fa-file-medical me-2"></i> Medical
+                    Records</a>
+                <a class="nav-link nav-link-custom" href="{% url 'billing_list' %}"><i
+                        class="fas fa-credit-card me-2"></i> Billing</a>
+                <a class="nav-link nav-link-custom" href="#"><i class="fas fa-book-medical me-2"></i> Health Tips</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10 py-4">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold">Welcome, {{ user.get_full_name|default:user.username }}</h2>
+                    <a href="{% url 'book_appointment' %}" class="btn btn-premium">New Appointment</a>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-3">
+                        <div class="stat-card bg-primary shadow-sm">
+                            <small>Appointments</small>
+                            <h3 class="fw-bold">{{ appointments.count }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card bg-success shadow-sm">
+                            <small>Medical Records</small>
+                            <h3 class="fw-bold">{{ history.count }}</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card bg-info shadow-sm">
+                            <small>Pending Bills</small>
+                            <h3 class="fw-bold">{{ unpaid_bills }}</h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Recent Appointments -->
+                    <div class="col-md-8">
+                        <div class="glass-card">
+                            <h5 class="fw-bold mb-4">Upcoming Appointments</h5>
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Doctor</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for appt in appointments %}
+                                        <tr>
+                                            <td>{{ appt.doctor }}</td>
+                                            <td>{{ appt.appointment_date|date:"M d, Y H:i" }}</td>
+                                            <td><span class="badge bg-{{ appt.status|lower }}">{{ appt.status }}</span>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-danger">Cancel</button></td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4">No appointments found.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Education -->
+                    <div class="col-md-4">
+                        <div class="glass-card">
+                            <h5 class="fw-bold mb-4">Health Resources</h5>
+                            {% for res in resources %}
+                            <div class="mb-3 p-3 border rounded-3 hover-shadow transition">
+                                <h6 class="fw-bold mb-1">{{ res.title }}</h6>
+                                <p class="small text-muted mb-0">{{ res.category }}</p>
+                            </div>
+                            {% empty %}
+                            <p class="text-muted">No resources available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .transition {
+        transition: all 0.3s;
+    }
+</style>
+{% endblock %}

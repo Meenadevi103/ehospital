@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Facilities - Admin Portal{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5 animate-up">
+        <h2 class="fw-bold">Facility Management</h2>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary rounded-pill">Back to Dashboard</a>
+    </div>
+
+    <div class="row g-4 mb-5 animate-up">
+        <div class="col-md-4">
+            <div class="glass-card text-center py-5">
+                <i class="fas fa-bed fa-3x text-primary mb-3"></i>
+                <h4 class="fw-bold">Beds & Wards</h4>
+                <p class="text-muted">Manage hospital bed occupancy and ward allocation.</p>
+                <button class="btn btn-premium w-100">Configure</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card text-center py-5">
+                <i class="fas fa-microscope fa-3x text-success mb-3"></i>
+                <h4 class="fw-bold">Lab Resources</h4>
+                <p class="text-muted">Monitor laboratory equipment and test schedules.</p>
+                <button class="btn btn-premium w-100">Configure</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card text-center py-5">
+                <i class="fas fa-pills fa-3x text-warning mb-3"></i>
+                <h4 class="fw-bold">Pharmacy Inventory</h4>
+                <p class="text-muted">Track medicine stock and dispensing logs.</p>
+                <button class="btn btn-premium w-100">Configure</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-card animate-up">
+        <h5 class="fw-bold mb-4">Current Facility List</h5>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Facility Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in facilities %}
+                    <tr>
+                        <td class="fw-bold">{{ f.name }}</td>
+                        <td>{{ f.facility_type }}</td>
+                        <td><span class="badge bg-success">Operational</span></td>
+                        <td>{{ f.capacity|default:"N/A" }}</td>
+                        <td><button class="btn btn-sm btn-outline-primary">Edit</button></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No facility data available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

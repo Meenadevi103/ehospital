@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register - E-Hospitality{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    .register-container {
+        max-width: 500px;
+        margin: 50px auto;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-container animate-up">
+        <div class="glass-card">
+            <h2 class="text-center mb-4 fw-bold">Create Account</h2>
+            <form method="post" id="regForm">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3 field-group" id="group-{{ field.name }}">
+                    <label class="form-label fw-semibold">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="text-muted d-block mt-1">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-premium w-100 mt-3 py-3">Register Now</button>
+            </form>
+            <div class="text-center mt-4">
+                <p>Already have an account? <a href="{% url 'login' %}" class="text-primary fw-bold">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleSelect = document.querySelector('select[name="role"]');
+        const specGroup = document.getElementById('group-specialization');
+        const expGroup = document.getElementById('group-experience_years');
+
+        // Pre-select role from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlRole = urlParams.get('role');
+        if (urlRole && roleSelect) {
+            roleSelect.value = urlRole;
+        }
+
+        function toggleDoctorFields() {
+            if (!roleSelect) return;
+            const isDoctor = roleSelect.value === 'doctor';
+            if (specGroup) specGroup.style.display = isDoctor ? 'block' : 'none';
+            if (expGroup) expGroup.style.display = isDoctor ? 'block' : 'none';
+
+            const specInput = document.querySelector('input[name="specialization"]');
+            if (specInput) specInput.required = isDoctor;
+        }
+
+        if (roleSelect) {
+            roleSelect.addEventListener('change', toggleDoctorFields);
+            toggleDoctorFields();
+        }
+
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            if (el.type !== 'checkbox' && el.type !== 'radio') {
+                el.classList.add('form-control');
+            }
+        });
+    });
+</script>
+{% endblock %}
