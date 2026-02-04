@@ -49,7 +49,7 @@
                     Records</a>
                 <a class="nav-link nav-link-custom" href="{% url 'billing_list' %}"><i
                         class="fas fa-credit-card me-2"></i> Billing</a>
-                <a class="nav-link nav-link-custom" href="#"><i class="fas fa-book-medical me-2"></i> Health Tips</a>
+                <!-- <a class="nav-link nav-link-custom" href="#"><i class="fas fa-book-medical me-2"></i> Health Tips</a> -->
             </nav>
         </div>
 
@@ -120,19 +120,19 @@
                     </div>
 
                     <!-- Health Education -->
-                    <div class="col-md-4">
-                        <div class="glass-card">
-                            <h5 class="fw-bold mb-4">Health Resources</h5>
-                            {% for res in resources %}
-                            <div class="mb-3 p-3 border rounded-3 hover-shadow transition">
-                                <h6 class="fw-bold mb-1">{{ res.title }}</h6>
-                                <p class="small text-muted mb-0">{{ res.category }}</p>
-                            </div>
-                            {% empty %}
-                            <p class="text-muted">No resources available.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    <!-- <div class="col-md-4"> -->
+                        <!-- <div class="glass-card"> -->
+                            <!-- <h5 class="fw-bold mb-4">Health Resources</h5> -->
+                            <!-- {% for res in resources %} -->
+                            <!-- <div class="mb-3 p-3 border rounded-3 hover-shadow transition"> -->
+                                <!-- <h6 class="fw-bold mb-1">{{ res.title }}</h6> -->
+                                <!-- <p class="small text-muted mb-0">{{ res.category }}</p> -->
+                            <!-- </div> -->
+                            <!-- {% empty %} -->
+                            <!-- <p class="text-muted">No resources available.</p> -->
+                            <!-- {% endfor %} -->
+                        <!-- </div> -->
+                    <!-- </div> -->
                 </div>
             </div>
         </div>

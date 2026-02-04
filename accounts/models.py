@@ -1,22 +1,32 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class User(AbstractUser):
-    IS_PATIENT = 'patient'
-    IS_DOCTOR = 'doctor'
-    IS_ADMIN = 'admin'
-    
-    ROLE_CHOICES = [
-        (IS_PATIENT, 'Patient'),
-        (IS_DOCTOR, 'Doctor'),
-        (IS_ADMIN, 'Admin'),
-    ]
-    
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=IS_PATIENT)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    is_approved = models.BooleanField(default=True) # Default True for patients/admins
+    ROLE_CHOICES = (
+        ('patient', 'Patient'),
+        ('doctor', 'Doctor'),
+        ('admin', 'Admin'),
+    )
+
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    is_approved = models.BooleanField(default=False)
+
+    # Extra fields for patients
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
+
+    # Doctor fields
+    department = models.CharField(max_length=100, null=True, blank=True)
+    qualification = models.CharField(max_length=100, null=True, blank=True)
+    experience = models.IntegerField(null=True, blank=True)
+    availability = models.CharField(max_length=100, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Patients auto approved
+        if self.role == 'patient':
+            self.is_approved = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.username} ({self.role})"
- 
+        return self.username
