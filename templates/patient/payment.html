@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment - E-Hospitality{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="glass-card animate-up">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Payment</h2>
+                    <p class="text-muted">Complete your payment for the appointment.</p>
+                </div>
+
+                <div class="mb-5">
+                    <h5 class="fw-semibold mb-3">Billing Summary</h5>
+                    <div class="bg-light p-4 rounded-3 mb-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Billing ID:</span>
+                            <strong>#{{ billing.id|stringformat:"05d" }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Service:</span>
+                            <strong>Appointment Consultation</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Amount:</span>
+                            <strong class="text-primary">₹{{ billing.amount }}</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <span class="fw-semibold">Total Due:</span>
+                            <span class="fw-bold fs-5 text-primary">₹{{ billing.amount }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label for="cardholder" class="form-label fw-semibold">Cardholder Name</label>
+                        <input type="text" id="cardholder" name="cardholder" class="form-control" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="cardnumber" class="form-label fw-semibold">Card Number</label>
+                        <input type="text" id="cardnumber" name="cardnumber" class="form-control" placeholder="1234 5678 9012 3456" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="expiry" class="form-label fw-semibold">Expiry Date</label>
+                            <input type="text" id="expiry" name="expiry" class="form-control" placeholder="MM/YY" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="cvv" class="form-label fw-semibold">CVV</label>
+                            <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-5">
+                        <button type="submit" class="btn btn-premium btn-lg">Complete Payment</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="cancelPayment()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling form fields to match premium look */
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    }
+</style>
+
+<script>
+    function cancelPayment() {
+        if (confirm('Are you sure you want to cancel this payment?')) {
+            window.location.href = "{% url 'patient_dashboard' %}";
+        }
+    }
+</script>
+{% endblock %}

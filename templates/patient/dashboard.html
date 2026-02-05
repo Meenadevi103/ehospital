@@ -104,9 +104,24 @@
                                         <tr>
                                             <td>{{ appt.doctor }}</td>
                                             <td>{{ appt.appointment_date|date:"M d, Y H:i" }}</td>
-                                            <td><span class="badge bg-{{ appt.status|lower }}">{{ appt.status }}</span>
+                                            <td>
+                                                {% if appt.status == 'Scheduled' %}
+                                                    <span class="badge bg-warning text-dark">Scheduled</span>
+                                                {% elif appt.status == 'Completed' %}
+                                                    <span class="badge bg-success">Completed</span>
+                                                {% elif appt.status == 'Cancelled' %}
+                                                    <span class="badge bg-danger">Cancelled</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">{{ appt.status }}</span>
+                                                {% endif %}
                                             </td>
-                                            <td><button class="btn btn-sm btn-outline-danger">Cancel</button></td>
+                                            <td>
+                                                {% if appt.status == 'Scheduled' %}
+                                                    <a href="{% url 'cancel_appointment' appt.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to cancel this appointment?');">Cancel</a>
+                                                {% else %}
+                                                    <span class="text-muted small">-</span>
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                         {% empty %}
                                         <tr>

@@ -7,48 +7,95 @@
     <div class="d-flex justify-content-between align-items-center mb-5 animate-up">
         <div>
             <h2 class="fw-bold">My Medical Records</h2>
-            <p class="text-muted">View your diagnosis and treatment history.</p>
+            <p class="text-muted">View your diagnosis, treatment history, and prescriptions.</p>
         </div>
         <a href="{% url 'patient_dashboard' %}" class="btn btn-outline-primary rounded-pill">
             <i class="fas fa-arrow-left me-2"></i> Dashboard
         </a>
     </div>
 
-    <div class="row g-4">
-        {% for record in history %}
-        <div class="col-md-6 animate-up">
-            <div class="glass-card h-100">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <span class="badge bg-primary rounded-pill px-3">{{ record.record_date|date:"M d, Y" }}</span>
-                </div>
-                <h4 class="fw-bold text-primary mb-3">{{ record.diagnosis }}</h4>
+    <!-- Prescriptions Section -->
+    {% if prescriptions %}
+    <div class="mb-5">
+        <h4 class="fw-bold mb-4">
+            <i class="fas fa-prescription-bottle text-success me-2"></i>Prescriptions
+        </h4>
+        <div class="row g-4">
+            {% for prescription in prescriptions %}
+            <div class="col-md-6 animate-up">
+                <div class="glass-card h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge bg-success rounded-pill px-3">{{ prescription.prescribed_date|date:"M d, Y" }}</span>
+                    </div>
+                    <h5 class="fw-bold text-success mb-3">
+                        <i class="fas fa-pills me-2"></i>{{ prescription.medication_name }}
+                    </h5>
 
-                <div class="mb-3">
-                    <h6 class="fw-bold text-muted small text-uppercase">Medications</h6>
-                    <p>{{ record.medications }}</p>
-                </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-muted small text-uppercase">Doctor</h6>
+                        <p>{{ prescription.doctor.user.get_full_name }}</p>
+                    </div>
 
-                <div class="mb-3">
-                    <h6 class="fw-bold text-muted small text-uppercase">Allergies</h6>
-                    <p class="{% if record.allergies %}text-danger{% endif %}">{{ record.allergies|default:"None
-                        reported" }}</p>
-                </div>
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-muted small text-uppercase">Dosage</h6>
+                        <p>{{ prescription.dosage }}</p>
+                    </div>
 
-                <div class="mb-0">
-                    <h6 class="fw-bold text-muted small text-uppercase">Treatment History</h6>
-                    <p class="mb-0">{{ record.treatment_history }}</p>
+                    <div class="mb-0">
+                        <h6 class="fw-bold text-muted small text-uppercase">Instructions</h6>
+                        <p class="mb-0">{{ prescription.instructions|default:"No special instructions" }}</p>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5">
-            <div class="glass-card py-5">
-                <i class="fas fa-file-medical fa-4x text-muted mb-4"></i>
-                <h3>No medical records found.</h3>
-                <p class="text-muted">Your medical history will appear here once updated by your doctor.</p>
-            </div>
-        </div>
-        {% endfor %}
     </div>
+    {% endif %}
+
+    <!-- Medical History Section -->
+    {% if history %}
+    <div>
+        <h4 class="fw-bold mb-4">
+            <i class="fas fa-file-medical text-primary me-2"></i>Medical History
+        </h4>
+        <div class="row g-4">
+            {% for record in history %}
+            <div class="col-md-6 animate-up">
+                <div class="glass-card h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge bg-primary rounded-pill px-3">{{ record.record_date|date:"M d, Y" }}</span>
+                    </div>
+                    <h4 class="fw-bold text-primary mb-3">{{ record.diagnosis }}</h4>
+
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-muted small text-uppercase">Medications</h6>
+                        <p>{{ record.medications }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="fw-bold text-muted small text-uppercase">Allergies</h6>
+                        <p class="{% if record.allergies %}text-danger{% endif %}">{{ record.allergies|default:"None reported" }}</p>
+                    </div>
+
+                    <div class="mb-0">
+                        <h6 class="fw-bold text-muted small text-uppercase">Treatment History</h6>
+                        <p class="mb-0">{{ record.treatment_history }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not prescriptions and not history %}
+    <div class="text-center py-5">
+        <div class="glass-card py-5">
+            <i class="fas fa-file-medical fa-4x text-muted mb-4"></i>
+            <h3>No medical records found.</h3>
+            <p class="text-muted">Your medical history and prescriptions will appear here once updated by your doctor.</p>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

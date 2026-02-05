@@ -4,6 +4,7 @@ from .models import DoctorProfile
 from django.contrib.auth.decorators import login_required
 from .models import DoctorProfile, Prescription
 from patient.models import Appointment, PatientProfile, MedicalHistory
+from datetime import date
 
 @login_required
 def doctor_dashboard(request):
@@ -12,8 +13,12 @@ def doctor_dashboard(request):
     
     profile, created = DoctorProfile.objects.get_or_create(user=request.user)
     
-    # Get appointments for this doctor
-    appointments = Appointment.objects.filter(doctor=profile).order_by('appointment_date')
+    # Get appointments for this doctor for today with patient information
+    today = date.today()
+    appointments = Appointment.objects.filter(
+        doctor=profile,
+        appointment_date__date=today
+    ).order_by('appointment_date').select_related('patient__user')
     
     context = {
         'profile': profile,

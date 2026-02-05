@@ -11,8 +11,14 @@ class AppointmentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         from doctor.models import DoctorProfile
         # Only show doctors who are approved
-        self.fields['doctor'].queryset = DoctorProfile.objects.filter(user__is_approved=True)
-        self.fields['doctor'].label_from_instance = lambda obj: f"Dr. {obj.user.get_full_name()} - {obj.specialization}"
+        self.fields['doctor'].queryset = DoctorProfile.objects.filter(
+            user__is_approved=True
+        ).select_related('user').order_by('user__first_name', 'user__last_name')
+        
+        # Display doctor with their full name and specialization
+        self.fields['doctor'].label_from_instance = lambda obj: (
+            f"Dr. {obj.user.first_name} {obj.user.last_name} - {obj.specialization}"
+        )
 
     class Meta:
         model = Appointment

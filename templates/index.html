@@ -5,7 +5,8 @@
 {% block extra_css %}
 <style>
     .hero-section {
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80');
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80');
         background-size: cover;
         background-position: center;
         height: 80vh;
@@ -40,12 +41,12 @@
         <div class="row">
             <div class="col-lg-8 animate-up">
                 <h1>Revolutionizing Healthcare Management</h1>
-                <p class="lead mb-4">Integrated care, administrative efficiency, and clinical excellence – all in one
-                    place.</p>
+                <p class="lead mb-4">
+                    Integrated care, administrative efficiency, and clinical excellence – all in one place.
+                </p>
                 <div class="d-flex gap-3">
-                    <a href="{% url 'patient_register' %}" class="btn btn-premium btn-lg">Get Started</a>
-                    <a href="{% url 'patient_register' %}?role=doctor"
-                        class="btn btn-outline-light btn-lg rounded-pill px-4">Join as Doctor</a>
+                    <a href="{% url 'patient_register' %}" class="btn btn-premium btn-lg">Patient Registration</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Login</a>
                 </div>
             </div>
         </div>
@@ -55,49 +56,68 @@
 <section id="features" class="py-5">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Select Your Module</h2>
-            <p class="text-muted">Choose the portal that matches your role in the system.</p>
+            <h2 class="display-5 fw-bold">System Functionalities</h2>
+            <p class="text-muted">
+                Register as a patient, book appointments, or login as a doctor to manage healthcare services.
+            </p>
         </div>
+
         <div class="row g-4">
-            <!-- Patient Module -->
+
+            <!-- Patient Registration -->
             <div class="col-md-4">
                 <div class="glass-card text-center h-100">
                     <div class="module-icon">
-                        <i class="fas fa-user-injured"
-                            style="background: linear-gradient(135deg, #0dcaf0 0%, #00d4ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                        <i class="fas fa-user-plus"
+                           style="background: linear-gradient(135deg, #0dcaf0 0%, #00d4ff 100%);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                     </div>
-                    <h3 class="card-title">Patient Portal</h3>
-                    <p class="text-muted">Manage appointments, view medical history, and pay bills securely.</p>
-                    <a href="{% url 'role_redirect' %}" class="btn btn-outline-info rounded-pill px-4 mt-3">Enter
-                        Portal</a>
+                    <h3 class="card-title">Patient Registration</h3>
+                    <p class="text-muted">
+                        Create your patient account and get access to healthcare services.
+                    </p>
+                    <a href="{% url 'patient_register' %}" class="btn btn-outline-info rounded-pill px-4 mt-3">
+                        Register Now
+                    </a>
                 </div>
             </div>
-            <!-- Doctor Module -->
+
+            <!-- Appointment Booking -->
+            <div class="col-md-4">
+                <div class="glass-card text-center h-100">
+                    <div class="module-icon">
+                        <i class="fas fa-calendar-check"
+                           style="background: linear-gradient(135deg, #198754 0%, #5cb85c 100%);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                    </div>
+                    <h3 class="card-title">Appointment Booking</h3>
+                    <p class="text-muted">
+                        Schedule appointments with doctors and manage your medical visits.
+                    </p>
+                    <a href="{% url 'login' %}" class="btn btn-outline-success rounded-pill px-4 mt-3">
+                        Book Appointment
+                    </a>
+                </div>
+            </div>
+
+            <!-- Doctor Login -->
             <div class="col-md-4">
                 <div class="glass-card text-center h-100">
                     <div class="module-icon">
                         <i class="fas fa-user-md"
-                            style="background: linear-gradient(135deg, #198754 0%, #5cb85c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                           style="background: linear-gradient(135deg, #6610f2 0%, #6f42c1 100%);
+                           -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                     </div>
-                    <h3 class="card-title">Doctor Portal</h3>
-                    <p class="text-muted">Access patient records, manage schedules, and issue e-prescriptions.</p>
-                    <a href="{% url 'role_redirect' %}" class="btn btn-outline-success rounded-pill px-4 mt-3">Enter
-                        Portal</a>
+                    <h3 class="card-title">Doctor Login</h3>
+                    <p class="text-muted">
+                        Doctors can log in to manage patients, appointments, and prescriptions.
+                    </p>
+                    <a href="{% url 'doctor_login' %}" class="btn btn-outline-primary rounded-pill px-4 mt-3">
+                        Doctor Login
+                    </a>
                 </div>
             </div>
-            <!-- Admin Module -->
-            <div class="col-md-4">
-                <div class="glass-card text-center h-100">
-                    <div class="module-icon">
-                        <i class="fas fa-user-shield"
-                            style="background: linear-gradient(135deg, #dc3545 0%, #ff4d4d 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                    </div>
-                    <h3 class="card-title">Admin Portal</h3>
-                    <p class="text-muted">Handle user management, facility resources, and department coordination.</p>
-                    <a href="{% url 'role_redirect' %}" class="btn btn-outline-danger rounded-pill px-4 mt-3">Enter
-                        Portal</a>
-                </div>
-            </div>
+
         </div>
     </div>
 </section>

@@ -10,8 +10,120 @@
     }
 
     .login-container {
-        max-width: 400px;
-        margin: 100px auto;
+        max-width: 450px;
+        margin: 60px auto;
+    }
+
+    .role-selector {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        justify-content: center;
+    }
+
+    .role-btn {
+        padding: 10px 20px;
+        border: 2px solid #e9ecef;
+        background: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #666;
+    }
+
+    .role-btn.active {
+        background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%);
+        color: white;
+        border-color: #0d6efd;
+    }
+
+    .role-btn:hover {
+        border-color: #0d6efd;
+        color: #0d6efd;
+    }
+
+    .role-content {
+        display: none;
+    }
+
+    .role-content.active {
+        display: block;
+    }
+
+    .role-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 35px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .glass-card h2 {
+        color: #0d6efd;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control {
+        border: 1.5px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px 12px;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.1);
+    }
+
+    .btn-premium {
+        background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%);
+        border: none;
+        font-weight: 600;
+    }
+
+    .btn-premium:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .login-link a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-link a:hover {
+        color: #00d4ff;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 20px 0;
+        color: #999;
+    }
+
+    .admin-warning {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+        border-left: 3px solid #dc3545;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        color: #721c24;
     }
 </style>
 {% endblock %}
@@ -20,23 +132,89 @@
 <div class="container">
     <div class="login-container animate-up">
         <div class="glass-card">
-            <h2 class="text-center mb-4 fw-bold">Login</h2>
-            <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Username</label>
-                    <input type="text" name="username" class="form-control" required>
+            <!-- Role Selector -->
+            <div class="role-selector">
+                <button type="button" class="role-btn active" onclick="switchRole('patient')">
+                    <i class="fas fa-user-injured"></i> Patient
+                </button>
+                <button type="button" class="role-btn" onclick="switchRole('admin')">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </div>
+
+            <!-- Patient Login -->
+            <div id="patient-login" class="role-content active">
+                <h2 class="text-center mb-4">Patient Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-premium w-100 mt-3 py-2">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                <div class="login-link">
+                    <p>Don't have an account? <a href="{% url 'patient_register' %}">Register here</a></p>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Password</label>
-                    <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <!-- Admin Login -->
+            <div id="admin-login" class="role-content">
+                <h2 class="text-center mb-4">Admin Login</h2>
+                <div class="admin-warning">
+                    <i class="fas fa-exclamation-circle"></i>
+                    This panel is restricted to authorized administrators only.
                 </div>
-                <button type="submit" class="btn btn-premium w-100 mt-3 py-3">Login</button>
-            </form>
-            <div class="text-center mt-4">
-                <p>Don't have an account? <a href="{% url 'patient_register' %}" class="text-primary fw-bold">Register</a></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="role" value="admin">
+                    <div class="mb-3">
+                        <label class="form-label">Admin Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Admin Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-premium w-100 mt-3 py-2" style="background: linear-gradient(135deg, #dc3545 0%, #ff4d4d 100%);">
+                        <i class="fas fa-sign-in-alt"></i> Admin Login
+                    </button>
+                </form>
+                <div class="login-link">
+                    <p><a href="{% url 'login' %}">Back to Patient Login</a></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchRole(role) {
+        // Hide all role contents
+        document.getElementById('patient-login').classList.remove('active');
+        document.getElementById('admin-login').classList.remove('active');
+
+        // Remove active class from all buttons
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show selected role content
+        document.getElementById(role + '-login').classList.add('active');
+
+        // Add active class to clicked button
+        event.target.closest('.role-btn').classList.add('active');
+    }
+</script>
+{% endblock %}
+
+
+
