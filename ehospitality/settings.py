@@ -75,6 +75,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ehospitality.wsgi.application'
 
+if os.getenv("DATABASE_URL"):
+    # 🌍 Production (Render PostgreSQL)
+    DATABASES = {
+        'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
+    }
+else:
+    # 💻 Local MySQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'mysql.connector.django',
+            'NAME': 'ehospitality_db',
+            'USER': 'ehospitality',
+            'PASSWORD': 'ehospital123',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+    }
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -88,12 +105,12 @@ WSGI_APPLICATION = 'ehospitality.wsgi.application'
         # 'HOST': 'localhost',
         # 'PORT': '3306',
     # }
-# }
-DATABASES = {
-    'default': dj_database_url.config(
-        default='mysql://ehospitality:ehospital123@localhost:3306/ehospitality_db'
-    )
-}
+
+# DATABASES = {
+    # 'default': dj_database_url.config(
+        # default='mysql://ehospitality:ehospital123@localhost:3306/ehospitality_db'
+    # )
+
 AUTH_USER_MODEL = 'accounts.User'
 
 
