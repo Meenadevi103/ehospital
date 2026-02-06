@@ -36,7 +36,16 @@ SECRET_KEY = 'django-insecure-z$hg(ttp2z!jlag8x55$qbsw$!^@tb%ls+p8q8f&&wf351i5=7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+]
+
+ALLOWED_HOSTS = [
+    ".onrender.com",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -172,3 +181,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'role_redirect'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
